@@ -1,13 +1,15 @@
 #include <cstddef>
 #include "Engine/Application.h"
-#include "GLFW/glfw3.h"
 
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
 
 namespace Engine
 {
 	Application::Application()
 	{
 	}
+
 	int Application::start(unsigned int height, unsigned int width, const char* title)
 	{
 		GLFWwindow* window;
@@ -27,11 +29,17 @@ namespace Engine
 		/* Make the window's context current */
 		glfwMakeContextCurrent(window);
 
+        // Init glad
+        if(!gladLoadGLLoader((GLADloadproc)(glfwGetProcAddress))){
+            glfwTerminate();
+            return -1;
+        }
+
 		/* Loop until the user closes the window */
 		while (!glfwWindowShouldClose(window))
 		{
 			/* Render here */
-			//glClear(GL_COLOR_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT);
 
 			/* Swap front and back buffers */
 			glfwSwapBuffers(window);
