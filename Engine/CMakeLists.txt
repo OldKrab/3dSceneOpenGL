@@ -2,9 +2,17 @@ cmake_minimum_required(VERSION 3.22)
 
 set(ENGINE_PROJECT_NAME Engine)
 
+set(INCLUDES
+    include/Engine/Application.h
+)
+
+set(SOURCES
+    src/Engine/Application.cpp
+)
+
 add_library(${ENGINE_PROJECT_NAME} STATIC
-    src/Engine/temp.cpp
-    include/Engine/temp.h
+    ${SOURCES}
+    ${INCLUDES}
 )
 
 add_subdirectory(../external/glfw ${CMAKE_CURRENT_BINARY_DIR}/glfw)

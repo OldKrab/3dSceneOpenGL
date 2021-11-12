@@ -1,12 +1,14 @@
-#include "Engine/temp.h"
-#include <GLFW/glfw3.h>
-
 #include <cstddef>
+#include "Engine/Application.h"
+#include "GLFW/glfw3.h"
 
 
 namespace Engine
 {
-	int CheckGLFW()
+	Application::Application()
+	{
+	}
+	int Application::start(unsigned int height, unsigned int width, const char* title)
 	{
 		GLFWwindow* window;
 
