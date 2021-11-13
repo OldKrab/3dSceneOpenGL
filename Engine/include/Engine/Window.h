@@ -11,10 +11,15 @@ namespace Engine {
 
     private:
         int Init();
+        int ImGuiInit();
 
+        void Render();
+        void OnUpdate();
+        void ImGuiRender(); 
         int _width, _height;
         std::string  _title;
         GLFWwindow *_window;
+        float _backgroundColor[4];
     };
 
 }
