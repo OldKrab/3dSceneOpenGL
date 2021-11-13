@@ -1,5 +1,5 @@
 build
-
+.idea
 
 CMakeLists.txt.user
 CMakeCache.txt

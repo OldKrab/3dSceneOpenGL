@@ -1,8 +1,8 @@
-#include "Engine/Application.h"
+#include "Engine/Window.h"
 #include <memory>
 
 int main() {
-	auto app = std::make_unique<Engine::Application>();
-	app->start(1024, 768, "Test");
+	auto window = std::make_unique<Engine::Window>(1024, 768, "Test");
+    window->Start();
 }
 
