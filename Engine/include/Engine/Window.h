@@ -2,24 +2,27 @@
 #include <iostream>
 
 struct GLFWwindow;
+
 namespace Engine {
-    class Window {
-    public:
-        Window(int width, int height, const char *title);
 
-        int Start();
+	class Window {
+	public:
+		Window(int width, int height, const char* title);
 
-    private:
-        int Init();
-        int ImGuiInit();
+		int Start();
 
-        void Render();
-        void OnUpdate();
-        void ImGuiRender(); 
-        int _width, _height;
-        std::string  _title;
-        GLFWwindow *_window;
-        float _backgroundColor[4];
-    };
+	private:
+		int Init();
+		int ImGuiInit();
+
+		void Render();
+		void OnUpdate();
+		void ImGuiRender();
+
+		int _width, _height;
+		std::string  _title;
+		GLFWwindow* _window;
+		float _backgroundColor[4];
+	};
 
 }

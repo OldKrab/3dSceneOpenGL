@@ -1,21 +1,24 @@
 cmake_minimum_required(VERSION 3.12)
 
 set(ENGINE_PROJECT_NAME Engine)
-
+project(${ENGINE_PROJECT_NAME})
 
 set(INCLUDES
         include/Engine/Window.h
-        
         )
 
 set(SOURCES
         src/Engine/Window.cpp
-         )
+        src/Engine/shaders.h)
+		
 
 add_library(${ENGINE_PROJECT_NAME} STATIC
     ${INCLUDES}
     ${SOURCES}
+
 )
+
+
 
 add_subdirectory(../external/glfw ${CMAKE_CURRENT_BINARY_DIR}/glfw)
 add_subdirectory(../external/glad ${CMAKE_CURRENT_BINARY_DIR}/glad)
