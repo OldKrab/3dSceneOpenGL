@@ -23,7 +23,6 @@ namespace Engine
 		 0.0f,  0.0f,  1.0f
 	};
 
-	GLuint vao;
 
 	Window::Window(int width, int height, const char* title)
 		:_width(width), _height(height), _title(title), _window(nullptr), _backgroundColor{ 0,0,0,1 }
@@ -56,10 +55,8 @@ namespace Engine
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		_shaderProgram->Use();
-		glBindVertexArray(vao);
+		_vao->Bind();
 		glDrawArrays(GL_TRIANGLES, 0, 3);
-
-
 	}
 
 	///////////////////////////////////////////
@@ -76,16 +73,11 @@ namespace Engine
 		_pointsVbo = std::make_unique<VertexBuffer>(points, sizeof(points), VertexBuffer::Usage::Static);
 		_colorsVbo = std::make_unique<VertexBuffer>(colors, sizeof(colors), VertexBuffer::Usage::Static);
 
-		glGenVertexArrays(1, &vao);
-		glBindVertexArray(vao);
 
-		glEnableVertexAttribArray(0);
-		_pointsVbo->Bind();
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+		_vao = std::make_unique<VertexArray>();
 
-		glEnableVertexAttribArray(1);
-		_colorsVbo->Bind();
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+		_vao->AddBuffer(*_pointsVbo);
+		_vao->AddBuffer(*_colorsVbo);
 
 		return 0;
 	}

@@ -3,6 +3,7 @@
 #include <string>
 #include "Engine/OpenGL/VertexBuffer.h"
 #include "Engine/OpenGL/ShaderProgram.h"
+#include "OpenGL/VertexArray.h"
 
 struct GLFWwindow;
 
@@ -30,6 +31,7 @@ namespace Engine {
 		std::unique_ptr<ShaderProgram> _shaderProgram;
 		std::unique_ptr<VertexBuffer> _pointsVbo;
 		std::unique_ptr<VertexBuffer> _colorsVbo;
+		std::unique_ptr<VertexArray> _vao;
 		float _backgroundColor[4];
 
 	};

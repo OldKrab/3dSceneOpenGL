@@ -8,14 +8,14 @@ set(INCLUDES
 		include/Engine/OpenGL/shaders.h
 		include/Engine/OpenGL/ShaderProgram.h
 		include/Engine/OpenGL/VertexBuffer.h
-	
+		include/Engine/OpenGL/VertexArray.h
         )
 
 set(SOURCES
         src/Engine/Window.cpp
 		src/Engine/OpenGL/ShaderProgram.cpp
 		src/Engine/OpenGL/VertexBuffer.cpp
-		
+		src/Engine/OpenGL/VertexArray.cpp
 		)
 		
 		
