@@ -33,10 +33,12 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${ALL_SOURCES})
 add_subdirectory(../external/glfw ${CMAKE_CURRENT_BINARY_DIR}/glfw)
 add_subdirectory(../external/glad ${CMAKE_CURRENT_BINARY_DIR}/glad)
 add_subdirectory(../external/imgui ${CMAKE_CURRENT_BINARY_DIR}/imgui)
+add_subdirectory(../external/glm ${CMAKE_CURRENT_BINARY_DIR}/glm)
 
 target_link_libraries(${ENGINE_PROJECT_NAME} PRIVATE glfw)
 target_link_libraries(${ENGINE_PROJECT_NAME} PUBLIC glad)
 target_link_libraries(${ENGINE_PROJECT_NAME} PRIVATE ImGui)
+target_link_libraries(${ENGINE_PROJECT_NAME} PRIVATE glm)
 
 target_include_directories(${ENGINE_PROJECT_NAME} PUBLIC include)
 target_compile_features(${ENGINE_PROJECT_NAME} PUBLIC cxx_std_17)   
