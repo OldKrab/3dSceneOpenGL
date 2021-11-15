@@ -1,5 +1,7 @@
 #pragma once
-#include <iostream>
+#include <memory>
+#include <string>
+#include "Engine/OpenGL/ShaderProgram.h"
 
 struct GLFWwindow;
 
@@ -13,6 +15,8 @@ namespace Engine {
 
 	private:
 		int Init();
+		int GlfwInit();
+		int GladInit();
 		int ImGuiInit();
 
 		void Render();
@@ -22,7 +26,9 @@ namespace Engine {
 		int _width, _height;
 		std::string  _title;
 		GLFWwindow* _window;
+		std::unique_ptr<ShaderProgram> _shaderProgram;
 		float _backgroundColor[4];
+
 	};
 
 }

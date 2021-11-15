@@ -1,7 +1,7 @@
 #pragma once
 
 namespace Engine {
-    static const char* vertexShader =
+    static const char* vertexShaderSource =
             "#version 460\n"
             "layout(location = 0) in vec3 vertexPosition;"
             "layout(location = 1) in vec3 vertexColor;"
@@ -11,7 +11,7 @@ namespace Engine {
             "   gl_Position = vec4(vertexPosition, 1.0);"
             "}";
 
-    static const char* fragmentShader =
+    static const char* fragmentShaderSource =
             "#version 460\n"
             "in vec3 color;"
             "out vec4 fragColor;"
