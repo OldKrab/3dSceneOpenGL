@@ -1,6 +1,10 @@
 
 #include "Engine/Shader/ShaderProgram.h"
+
+#include <stdexcept>
+
 #include "glad/glad.h"
+#include "glm/gtc/type_ptr.hpp"
 
 namespace Engine
 {
@@ -8,7 +12,7 @@ namespace Engine
 
 	ShaderProgram::ShaderProgram(const char* vertexShaderSource, const char* fragmentShaderSource)
 	{
-		_shaderProgramId = glCreateProgram();
+		_id = glCreateProgram();
 		const auto vertexShaderId = CreateShader(vertexShaderSource, GL_VERTEX_SHADER);
 		const auto fragShaderId = CreateShader(fragmentShaderSource, GL_FRAGMENT_SHADER);
 		LinkShaders(vertexShaderId, fragShaderId);
@@ -18,12 +22,18 @@ namespace Engine
 
 	ShaderProgram::~ShaderProgram()
 	{
-		glDeleteProgram(_shaderProgramId);
+		glDeleteProgram(_id);
 	}
 
 	void ShaderProgram::Use() const
 	{
-		glUseProgram(_shaderProgramId);
+		glUseProgram(_id);
+	}
+
+	void ShaderProgram::SetUniformMatrix4fv(const std::string property, const glm::mat4& data)
+	{
+		const GLint transformLoc = glGetUniformLocation(_id, property.c_str());
+		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(data));
 	}
 
 	GLuint ShaderProgram::CreateShader(const char* shaderSource, GLenum shaderType)
@@ -31,6 +41,15 @@ namespace Engine
 		const GLuint shaderId = glCreateShader(shaderType);
 		glShaderSource(shaderId, 1, &shaderSource, nullptr);
 		glCompileShader(shaderId);
+		GLint successCompile;
+		glGetShaderiv(shaderId, GL_COMPILE_STATUS, &successCompile);
+		if(successCompile == GL_FALSE)
+		{
+			char log[1024];
+			glGetShaderInfoLog(shaderId, 1024, nullptr, log);
+			throw std::runtime_error(std::string("Cant compile shader: ") + log);
+		}
+
 		return shaderId;
 	}
 
@@ -41,8 +60,8 @@ namespace Engine
 
 	void ShaderProgram::LinkShaders(GLuint vertexShaderId, GLuint fragShaderId) const
 	{
-		glAttachShader(_shaderProgramId, vertexShaderId);
-		glAttachShader(_shaderProgramId, fragShaderId);
-		glLinkProgram(_shaderProgramId);
+		glAttachShader(_id, vertexShaderId);
+		glAttachShader(_id, fragShaderId);
+		glLinkProgram(_id);
 	}
 }

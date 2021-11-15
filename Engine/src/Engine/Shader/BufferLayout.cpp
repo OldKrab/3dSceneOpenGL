@@ -1,6 +1,4 @@
 #include "Engine/Shader/BufferLayout.h"
-
-#include "glad/glad.h"
 #include <stdexcept>
 
 namespace Engine

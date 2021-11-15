@@ -13,6 +13,9 @@ set(INCLUDES
 		include/Engine/Shader/VertexArray.h
 		include/Engine/Shader/BufferLayout.h
 		include/Engine/Shader/BufferElement.h
+		include/Engine/Shader/IndexBuffer.h
+		include/Engine/Shader/BufferUsage.h
+		include/Engine/Texture.h
         )
 
 set(SOURCES
@@ -22,6 +25,9 @@ set(SOURCES
 		src/Engine/Shader/VertexArray.cpp
 		src/Engine/Shader/BufferLayout.cpp
 		src/Engine/Shader/BufferElement.cpp
+		src/Engine/Shader/IndexBuffer.cpp
+		src/Engine/Shader/BufferUsage.cpp	
+		src/Engine/Texture.cpp
 		)
 		
 		
@@ -40,11 +46,13 @@ add_subdirectory(../external/glfw ${CMAKE_CURRENT_BINARY_DIR}/glfw)
 add_subdirectory(../external/glad ${CMAKE_CURRENT_BINARY_DIR}/glad)
 add_subdirectory(../external/imgui ${CMAKE_CURRENT_BINARY_DIR}/imgui)
 add_subdirectory(../external/glm ${CMAKE_CURRENT_BINARY_DIR}/glm)
+add_subdirectory(../external/stb ${CMAKE_CURRENT_BINARY_DIR}/stb)
 
 target_link_libraries(${ENGINE_PROJECT_NAME} PRIVATE glfw)
 target_link_libraries(${ENGINE_PROJECT_NAME} PUBLIC glad)
 target_link_libraries(${ENGINE_PROJECT_NAME} PRIVATE ImGui)
-target_link_libraries(${ENGINE_PROJECT_NAME} PRIVATE glm)
+target_link_libraries(${ENGINE_PROJECT_NAME} PUBLIC glm)
+target_link_libraries(${ENGINE_PROJECT_NAME} PRIVATE stb)
 
 target_include_directories(${ENGINE_PROJECT_NAME} PUBLIC include)
 target_compile_features(${ENGINE_PROJECT_NAME} PUBLIC cxx_std_17)   

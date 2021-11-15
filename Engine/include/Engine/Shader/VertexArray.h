@@ -1,4 +1,5 @@
 #pragma once
+#include "IndexBuffer.h"
 #include "VertexBuffer.h"
 #include "glad/glad.h"
 
@@ -6,7 +7,7 @@ namespace Engine {
 
 	class VertexArray {
 	public:
-		
+
 		VertexArray();
 		~VertexArray();
 
@@ -18,11 +19,14 @@ namespace Engine {
 		void Bind() const;
 		void UnBind() const;
 
-		void AddBuffer(const VertexBuffer& buffer);
+		void AddVertexBuffer(const VertexBuffer& buffer);
+		void SetIndexBuffer(const IndexBuffer& buffer);
 
+		GLuint GetIndexesCount() const { return _indexesCount; }
 	private:
-	
-		GLuint _buffersCount;
+
+		GLuint _vertexBuffersCount;
+		GLuint _indexesCount = 0;
 		GLuint _id;
 	};
 

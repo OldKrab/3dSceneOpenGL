@@ -1,4 +1,5 @@
 #pragma once
+#include "BufferUsage.h"
 #include "glad/glad.h"
 #include "Engine/Shader/BufferLayout.h"
 
@@ -6,12 +7,8 @@ namespace Engine {
 
 	class VertexBuffer {
 	public:
-		enum class Usage
-		{
-			Static, Dynamic, Stream
-		};
-
-		VertexBuffer(const void* data, size_t size, BufferLayout layout, Usage usage);
+		
+		VertexBuffer(const void* data, size_t size, BufferLayout layout, BufferUsage usage);
 		~VertexBuffer();
 
 		VertexBuffer(VertexBuffer&&) = delete;
