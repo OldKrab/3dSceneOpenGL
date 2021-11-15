@@ -22,7 +22,7 @@ namespace Engine {
 
 	private:
 	
-		GLuint _buffersCount = 0;
+		GLuint _buffersCount;
 		GLuint _id;
 	};
 

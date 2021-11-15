@@ -1,4 +1,4 @@
-#include "Engine/OpenGL/VertexArray.h"
+#include "Engine/Shader/VertexArray.h"
 #include "glad/glad.h"
 
 namespace Engine
@@ -6,6 +6,7 @@ namespace Engine
 	VertexArray::VertexArray()
 	{
 		_id = 0;
+		_buffersCount = 0;
 		glGenVertexArrays(1, &_id);
 	}
 
@@ -29,9 +30,21 @@ namespace Engine
 		Bind();
 		buffer.Bind();
 
-		glEnableVertexAttribArray(_buffersCount);
-		glVertexAttribPointer(_buffersCount, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+		for (auto&& elem : buffer.GetLayout().GetElements())
+		{
+			glEnableVertexAttribArray(_buffersCount);
+			glVertexAttribPointer(
+				_buffersCount,
+				elem.count,
+				elem.type,
+				GL_FALSE,
+				buffer.GetLayout().GetStride(),
+				reinterpret_cast<GLvoid*>(elem.offset)
+			);
+			++_buffersCount;
+		}
 
-		++_buffersCount;
+
+
 	}
 }

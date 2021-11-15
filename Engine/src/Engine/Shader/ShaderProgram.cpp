@@ -1,6 +1,5 @@
 
-#include "Engine/OpenGL/ShaderProgram.h"
-
+#include "Engine/Shader/ShaderProgram.h"
 #include "glad/glad.h"
 
 namespace Engine

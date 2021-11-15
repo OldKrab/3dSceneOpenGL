@@ -3,19 +3,25 @@ cmake_minimum_required(VERSION 3.12)
 set(ENGINE_PROJECT_NAME Engine)
 project(${ENGINE_PROJECT_NAME})
 
+
+
 set(INCLUDES
         include/Engine/Window.h
-		include/Engine/OpenGL/shaders.h
-		include/Engine/OpenGL/ShaderProgram.h
-		include/Engine/OpenGL/VertexBuffer.h
-		include/Engine/OpenGL/VertexArray.h
+		include/Engine/Shader/shaders.h
+		include/Engine/Shader/ShaderProgram.h
+		include/Engine/Shader/VertexBuffer.h
+		include/Engine/Shader/VertexArray.h
+		include/Engine/Shader/BufferLayout.h
+		include/Engine/Shader/BufferElement.h
         )
 
 set(SOURCES
         src/Engine/Window.cpp
-		src/Engine/OpenGL/ShaderProgram.cpp
-		src/Engine/OpenGL/VertexBuffer.cpp
-		src/Engine/OpenGL/VertexArray.cpp
+		src/Engine/Shader/ShaderProgram.cpp
+		src/Engine/Shader/VertexBuffer.cpp
+		src/Engine/Shader/VertexArray.cpp
+		src/Engine/Shader/BufferLayout.cpp
+		src/Engine/Shader/BufferElement.cpp
 		)
 		
 		

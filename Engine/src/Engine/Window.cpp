@@ -1,5 +1,5 @@
 #include "Engine/Window.h"
-#include "Engine/OpenGL/shaders.h"
+#include "Engine/Shader/shaders.h"
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
@@ -9,18 +9,11 @@
 
 namespace Engine
 {
-	static GLfloat points[]
+	static GLfloat points_colors[]
 	{
-		 0.0f,  0.5f, 0.0f,
-		-0.5f, -0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f
-	};
-
-	static GLfloat colors[]
-	{
-		 1.0f,  0.0f,  0.0f,
-		 0.0f,  1.0f,  0.0f,
-		 0.0f,  0.0f,  1.0f
+		 0.0f,  0.5f, 0.0f,		1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, 0.0f,		0.0f,  1.0f,  0.0f,
+		 0.5f, -0.5f, 0.0f,		0.0f,  0.0f,  1.0f
 	};
 
 
@@ -70,14 +63,13 @@ namespace Engine
 
 		_shaderProgram = std::make_unique<ShaderProgram>(vertexShaderSource, fragmentShaderSource);
 
-		_pointsVbo = std::make_unique<VertexBuffer>(points, sizeof(points), VertexBuffer::Usage::Static);
-		_colorsVbo = std::make_unique<VertexBuffer>(colors, sizeof(colors), VertexBuffer::Usage::Static);
+		BufferLayout layout({{GL_FLOAT, 3}, {GL_FLOAT, 3}});
+		_vbo = std::make_unique<VertexBuffer>(points_colors, sizeof(points_colors), layout, VertexBuffer::Usage::Static);
 
 
 		_vao = std::make_unique<VertexArray>();
 
-		_vao->AddBuffer(*_pointsVbo);
-		_vao->AddBuffer(*_colorsVbo);
+		_vao->AddBuffer(*_vbo);
 
 		return 0;
 	}
@@ -134,12 +126,12 @@ namespace Engine
 
 		ImGui::Begin("Debug");
 		ImGui::ColorEdit4("Background Color", _backgroundColor);
-		ImGui::DragFloat3("Points 1", points + 0, 0.01f);
-		ImGui::DragFloat3("Points 2", points + 3, 0.01f);
-		ImGui::DragFloat3("Points 3", points + 6, 0.01f);
-		ImGui::ColorEdit3("Color 1", colors + 0);
-		ImGui::ColorEdit3("Color 2", colors + 3);
-		ImGui::ColorEdit3("Color 3", colors + 6);
+		ImGui::DragFloat3("Points 1", points_colors + 0, 0.01f);
+		ImGui::DragFloat3("Points 2", points_colors + 6, 0.01f);
+		ImGui::DragFloat3("Points 3", points_colors + 12, 0.01f);
+		ImGui::ColorEdit3("Color 1", points_colors + 3);
+		ImGui::ColorEdit3("Color 2", points_colors + 9);
+		ImGui::ColorEdit3("Color 3", points_colors + 15);
 
 		ImGui::End();
 

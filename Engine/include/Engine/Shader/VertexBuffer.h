@@ -1,5 +1,6 @@
 #pragma once
 #include "glad/glad.h"
+#include "Engine/Shader/BufferLayout.h"
 
 namespace Engine {
 
@@ -10,7 +11,7 @@ namespace Engine {
 			Static, Dynamic, Stream
 		};
 
-		VertexBuffer(const void* data, const size_t size, Usage usage);
+		VertexBuffer(const void* data, size_t size, BufferLayout layout, Usage usage);
 		~VertexBuffer();
 
 		VertexBuffer(VertexBuffer&&) = delete;
@@ -19,11 +20,12 @@ namespace Engine {
 		VertexBuffer operator=(const VertexBuffer&) = delete;
 
 		void Bind() const;
-		void UnBind() const;
+		static void UnBind();
+		const BufferLayout& GetLayout() const { return _layout; }
 
 	private:
-		GLenum UsageToGLenum(Usage usage);
 
+		BufferLayout _layout;
 		GLuint _id;
 	};
 
