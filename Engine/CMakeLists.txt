@@ -7,12 +7,15 @@ set(INCLUDES
         include/Engine/Window.h
 		include/Engine/OpenGL/shaders.h
 		include/Engine/OpenGL/ShaderProgram.h
+		include/Engine/OpenGL/VertexBuffer.h
+	
         )
 
 set(SOURCES
         src/Engine/Window.cpp
-        
 		src/Engine/OpenGL/ShaderProgram.cpp
+		src/Engine/OpenGL/VertexBuffer.cpp
+		
 		)
 		
 		

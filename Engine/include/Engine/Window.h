@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <string>
+#include "Engine/OpenGL/VertexBuffer.h"
 #include "Engine/OpenGL/ShaderProgram.h"
 
 struct GLFWwindow;
@@ -16,8 +17,8 @@ namespace Engine {
 	private:
 		int Init();
 		int GlfwInit();
-		int GladInit();
-		int ImGuiInit();
+		static int GladInit();
+		int ImGuiInit() const;
 
 		void Render();
 		void OnUpdate();
@@ -27,6 +28,8 @@ namespace Engine {
 		std::string  _title;
 		GLFWwindow* _window;
 		std::unique_ptr<ShaderProgram> _shaderProgram;
+		std::unique_ptr<VertexBuffer> _pointsVbo;
+		std::unique_ptr<VertexBuffer> _colorsVbo;
 		float _backgroundColor[4];
 
 	};
