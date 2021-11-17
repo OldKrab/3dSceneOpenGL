@@ -23,11 +23,11 @@ namespace Engine {
             R"(#version 460
 			in vec2 texPoint;
 
-			uniform sampler2D texId;
+			uniform sampler2D texture_diffuse1;
 
 			out vec4 fragColor;
 
             void main() {
-               fragColor = texture(texId, texPoint);
+               fragColor = texture(texture_diffuse1, texPoint);
             })";
 }

@@ -19,6 +19,8 @@ namespace Engine {
 		void Use() const;
 
 		void SetUniformMatrix4fv(const std::string property, const glm::mat4& data);
+		void SetFloat(const std::string property,  float value);
+
 
 	private:
 		static GLuint CreateShader(const char* shaderSource, GLenum shaderType);

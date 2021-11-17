@@ -21,23 +21,32 @@ namespace Engine {
     };
 
 
-    class Mesh  {
+    class Mesh {
     public:
-        Mesh(std::string name, std::vector<Vertex> vertices, std::vector<GLuint> indexes, std::unique_ptr<Texture> texture);
-        Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indexes, std::unique_ptr<Texture> texture);
+        Mesh(std::string name, std::vector<Vertex> vertices, std::vector<GLuint> indexes, std::vector<Texture> texture);
+
+        Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indexes, std::vector<Texture> texture);
+
+        Mesh(const Mesh &) = delete;
+
+        Mesh(Mesh &&other) noexcept;
+
+        Mesh operator=(const Mesh &) = delete;
+
+        Mesh& operator=(Mesh &&other) noexcept;
 
         void Draw(ShaderProgram &shader);
-        void ImGuiRender();
 
-        const std::string& GetName() const {return _name;}
-        void SetName(const std::string& name)  { _name = name;}
+
     private:
+        void Swap(Mesh& other);
+
         void SetupMesh();
-        Transform _transform;
-        std::string _name;
+
+
         std::vector<Vertex> _vertices;
         std::vector<GLuint> _indexes;
-        std::unique_ptr<Texture> _texture;
+        std::vector<Texture> _textures;
         std::unique_ptr<VertexArray> _vao;
         std::unique_ptr<VertexBuffer> _vbo;
         std::unique_ptr<IndexBuffer> _ibo;

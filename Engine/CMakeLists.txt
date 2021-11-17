@@ -36,10 +36,12 @@ set(SOURCES
 		src/Engine/Objects/Mesh.cpp
 		src/Engine/Objects/Scene.cpp
         src/Engine/Objects/Transform.cpp
-		src/Engine/Objects/Camera.cpp)
+		src/Engine/Objects/Camera.cpp
+		src/Engine/Objects/Model.cpp
+		)
 		
 		
-set(ALL_SOURCES ${INCLUDES} ${SOURCES} )
+set(ALL_SOURCES ${INCLUDES} ${SOURCES})
 
 add_library(${ENGINE_PROJECT_NAME} STATIC
     ${ALL_SOURCES}
@@ -55,12 +57,14 @@ add_subdirectory(../external/glad ${CMAKE_CURRENT_BINARY_DIR}/glad)
 add_subdirectory(../external/imgui ${CMAKE_CURRENT_BINARY_DIR}/imgui)
 add_subdirectory(../external/glm ${CMAKE_CURRENT_BINARY_DIR}/glm)
 add_subdirectory(../external/stb ${CMAKE_CURRENT_BINARY_DIR}/stb)
+add_subdirectory(../external/OBJLoader ${CMAKE_CURRENT_BINARY_DIR}/OBJLoader)
 
 target_link_libraries(${ENGINE_PROJECT_NAME} PUBLIC glfw)
 target_link_libraries(${ENGINE_PROJECT_NAME} PUBLIC glad)
 target_link_libraries(${ENGINE_PROJECT_NAME} PUBLIC ImGui)
 target_link_libraries(${ENGINE_PROJECT_NAME} PUBLIC glm)
 target_link_libraries(${ENGINE_PROJECT_NAME} PUBLIC stb)
+target_link_libraries(${ENGINE_PROJECT_NAME} PUBLIC OBJLoader)
 
 target_include_directories(${ENGINE_PROJECT_NAME} PUBLIC include)
 target_compile_features(${ENGINE_PROJECT_NAME} PUBLIC cxx_std_17)   

@@ -6,18 +6,23 @@
 
 namespace Engine {
     void Scene::Draw(ShaderProgram &shader) {
-        for (auto &&mesh: _meshes)
-            mesh->Draw(shader);
+        for (auto &&mesh: _models)
+            mesh.Draw(shader);
     }
 
     void Scene::ImGuiRender() {
         if (ImGui::CollapsingHeader("Meshes")) {
-            for (auto &&mesh: _meshes)
-                mesh->ImGuiRender();
+            ImGui::Indent();
+            for (int i = 0; i < _models.size(); i++)
+                if (ImGui::TreeNode(_models[i].GetName().c_str())) {
+                    _models[i].ImGuiRender();
+                    ImGui::TreePop();
+                }
+            ImGui::Unindent();
         }
     }
 
-    void Scene::AddMesh(std::unique_ptr<Mesh>&& mesh) {
-        _meshes.push_back(std::move(mesh));
+    void Scene::AddModel(Model &&model) {
+        _models.push_back(std::move(model));
     }
 }

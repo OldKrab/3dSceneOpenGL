@@ -41,7 +41,7 @@ namespace Engine {
 
         _shaderProgram->Use();
 
-        _shaderProgram->SetUniformMatrix4fv("view", _camera->GetView());
+        _shaderProgram->SetUniformMatrix4fv("view", _camera.GetView());
         _shaderProgram->SetUniformMatrix4fv("projection", projection);
         _scene.Draw(*_shaderProgram);
     }
@@ -76,8 +76,7 @@ namespace Engine {
     ///////////////////////////////////////////
     int Window::Init() {
         _shaderProgram = std::make_unique<ShaderProgram>(vertexShaderSource, fragmentShaderSource);
-        _camera = std::make_unique<Camera>();
-        _camera->MovePosition({0, 0, -3});
+        _camera.MovePosition({0, 0, -3});
         SetProjection(_width, _height);
 
 
@@ -150,10 +149,8 @@ namespace Engine {
         ImGui::Begin("Debug");
         ImGui::ColorEdit4("Background Color", _backgroundColor);
 
-        ImGui::Indent();
         _scene.ImGuiRender();
-        ImGui::Unindent();
-
+        _camera.ImGuiRender();
 
         ImGui::End();
 
@@ -191,7 +188,7 @@ namespace Engine {
             lastX = xpos;
             lastY = ypos;
 
-            _camera->MoveDirection(xoffset, yoffset);
+            _camera.MoveDirection(xoffset, yoffset);
         } else
             firstMouse = true;
     }
@@ -213,14 +210,14 @@ namespace Engine {
             position.y -= 1;
 
         if (glm::abs(glm::length(position)) > 1e-5)
-            _camera->MovePosition(glm::normalize(position) * delta);
+            _camera.MovePosition(glm::normalize(position) * delta);
     }
 
     ///////////////////////////////////////////
     void Window::SetProjection(int width, int height) {
         projection = glm::perspective(glm::radians(45.0f),
                                       (float) width / (float) height, 0.01f,
-                                      100.0f);
+                                      1000.0f);
     }
 
     void Window::SetScene(Scene&& scene) {

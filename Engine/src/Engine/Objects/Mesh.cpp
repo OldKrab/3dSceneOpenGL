@@ -6,20 +6,34 @@
 
 namespace Engine {
     Mesh::Mesh(std::string name, std::vector<Vertex> vertices, std::vector<GLuint> indexes,
-               std::unique_ptr<Texture> texture)
-            : _name(std::move(name)), _vertices(std::move(vertices)), _indexes(std::move(indexes)),
-              _texture(std::move(texture)) {
+               std::vector<Texture> texture)
+            : _vertices(std::move(vertices)), _indexes(std::move(indexes)),
+              _textures(std::move(texture)) {
         SetupMesh();
     }
 
-    Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indexes, std::unique_ptr<Texture> texture)
+    Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indexes, std::vector<Texture> texture)
             : Mesh("NoName", std::move(vertices), std::move(indexes), std::move(texture)) {}
 
     void Mesh::Draw(ShaderProgram &shader) {
-        _texture->Bind();
+        unsigned int diffuseNr = 1;
+        unsigned int specularNr = 1;
+        for (unsigned int i = 0; i < _textures.size(); i++) {
+            glActiveTexture(GL_TEXTURE0 + i); // активируем соответствующий текстурный юнит перед привязкой
+            // Получаем номер текстуры (значение N в diffuse_textureN)
+            std::string number;
+            std::string name = _textures[i].type;
+            if (name == "texture_diffuse")
+                number = std::to_string(diffuseNr++);
+            else if (name == "texture_specular")
+                number = std::to_string(specularNr++);
+
+            shader.SetFloat(("material." + name + number).c_str(), i);
+            _textures[i].Bind();
+        }
+        glActiveTexture(GL_TEXTURE0);
         _vao->Bind();
-        auto debug = _transform.GetMatrix();
-        shader.SetUniformMatrix4fv("model", debug);
+
 
         glDrawElements(GL_TRIANGLES, (GLsizei) _indexes.size(), GL_UNSIGNED_INT, 0);
     }
@@ -39,11 +53,24 @@ namespace Engine {
         _vao->SetIndexBuffer(*_ibo);
     }
 
-    void Mesh::ImGuiRender() {
-        if (ImGui::TreeNode(_name.c_str())) {
-            _transform.ImGuiRender();
-            ImGui::TreePop();
-        }
+
+    Mesh::Mesh(Mesh &&other) noexcept {
+        Swap(other);
+    }
+
+    Mesh &Mesh::operator=(Mesh &&other) noexcept {
+        Mesh temp(std::move(other));
+        Swap(temp);
+        return *this;
+    }
+
+    void Mesh::Swap(Mesh &other) {
+        std::swap(_vertices, other._vertices);
+        std::swap(_indexes, other._indexes);
+        std::swap(_textures, other._textures);
+        std::swap(_vao, other._vao);
+        std::swap(_vbo, other._vbo);
+        std::swap(_ibo, other._ibo);
     }
 
 

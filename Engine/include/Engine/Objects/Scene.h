@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 #include "Mesh.h"
+#include "Model.h"
 
 namespace Engine {
 
@@ -17,9 +18,9 @@ namespace Engine {
         Scene& operator=(Scene&&) = default;
 		void Draw(ShaderProgram &shader);
 		void ImGuiRender();
-		void AddMesh(std::unique_ptr<Mesh>&& mesh);
+		void AddModel(Model&& model);
 	private:
-		std::vector<std::unique_ptr<Mesh>> _meshes;
+		std::vector<Model> _models;
 	};
 
 }

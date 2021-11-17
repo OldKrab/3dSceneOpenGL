@@ -40,7 +40,7 @@ namespace Engine {
 		GLFWwindow* _window;
 		std::unique_ptr<ShaderProgram> _shaderProgram;
         Scene _scene;
-		std::unique_ptr<Camera> _camera;
+		Camera _camera;
 		bool _isCameraRotating = false;
 		float _backgroundColor[4];
 		glm::mat4 projection;

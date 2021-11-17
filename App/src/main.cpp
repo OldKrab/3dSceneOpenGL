@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-std::unique_ptr<Engine::Mesh> CreateCube() {
+Engine::Mesh CreateCube() {
     std::vector<Engine::Vertex> vertexes
             {
                     {{-0.5f, -0.5f, -0.5f}, {0, 0, 0}, {0.25f, 0.5f}},
@@ -31,23 +31,25 @@ std::unique_ptr<Engine::Mesh> CreateCube() {
             5, 0, 12, 3
     };
 
-
-    auto texture = std::make_unique<Engine::Texture>("assets/tex2.jpg");
-    texture->SetParameteri(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    return std::make_unique<Engine::Mesh>("Some Head", vertexes, indexes, std::move(texture));
+    std::vector<Engine::Texture> textures;
+    auto texture = Engine::Texture("assets/tex2.jpg");
+    texture.SetParameteri(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    textures.push_back(std::move(texture));
+    return Engine::Mesh("Some Head", vertexes, indexes, std::move(textures));
 }
 
 int main() {
-	try{
+    try {
 
-	auto window = std::make_unique<Engine::Window>(1600, 900, "Test");
-    Engine::Scene scene;
-    scene.AddMesh(CreateCube());
-    window->SetScene(std::move(scene));
-    window->Start();
-	}catch (std::exception& e)
-	{
-		std::cout << e.what();
-	}
+        auto window = std::make_unique<Engine::Window>(1600, 900, "Test");
+        Engine::Scene scene;
+
+        scene.AddModel(Engine::Model("mister", "assets/hitler/hitler.obj"));
+        scene.AddModel(Engine::Model("grass", "assets/grass/10450_Rectangular_Grass_Patch_v1_iterations-2.obj"));
+        window->SetScene(std::move(scene));
+        window->Start();
+    } catch (std::exception &e) {
+        std::cout << e.what();
+    }
 }
 

@@ -1,5 +1,6 @@
 #include <glm/ext/matrix_float4x4.hpp>
 #include <glm/ext/matrix_transform.hpp>
+#include <imgui.h>
 #include "Engine/Objects/Camera.h"
 
 namespace Engine {
@@ -23,7 +24,7 @@ namespace Engine {
         auto right = glm::normalize(glm::cross(GetDirection(), {0, 1, 0}));
         auto front = glm::normalize(glm::cross(right, {0, -1, 0}));
         _position += right * vec.x;
-        _position += glm::vec3{0,1,0} * vec.y;
+        _position += glm::vec3{0, 1, 0} * vec.y;
         _position += front * vec.z;
     }
 
@@ -38,5 +39,16 @@ namespace Engine {
                 std::sin(glm::radians(_pitch)),
                 std::sin(glm::radians(_yaw)) * std::cos(glm::radians(_pitch))
         };
+    }
+
+    void Camera::ImGuiRender() {
+        if (ImGui::CollapsingHeader("Camera")) {
+            ImGui::Indent();
+            float zero = 0;
+            ImGui::DragFloat("Movement Speed", &MovementSpeed, 0.05, zero, 100);
+            ImGui::DragFloat("Rotating Speed", &RotatingSpeed, 0.0001, zero, 0.3f);
+            ImGui::Unindent();
+        }
+
     }
 }

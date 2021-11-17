@@ -9,6 +9,7 @@ namespace Engine {
         void MoveDirection(float yaw, float pitch);
         float RotatingSpeed = 0.07;
         float MovementSpeed = 3;
+        void ImGuiRender();
     private:
         glm::vec3 GetDirection() const;
         glm::vec3 _position;

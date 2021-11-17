@@ -36,6 +36,11 @@ namespace Engine
 		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(data));
 	}
 
+	void ShaderProgram::SetFloat(const std::string property, float value) {
+		const GLint loc = glGetUniformLocation(_id, property.c_str());
+		glUniform1f(loc, value);
+	}
+
 	GLuint ShaderProgram::CreateShader(const char* shaderSource, GLenum shaderType)
 	{
 		const GLuint shaderId = glCreateShader(shaderType);
@@ -64,4 +69,6 @@ namespace Engine
 		glAttachShader(_id, fragShaderId);
 		glLinkProgram(_id);
 	}
+
+
 }
