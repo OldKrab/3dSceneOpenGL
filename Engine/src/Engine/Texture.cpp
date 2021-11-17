@@ -30,6 +30,12 @@ namespace Engine
 		glDeleteTextures(1, &_id);
 	}
 
+	Texture::Texture(Texture&& other) noexcept
+	{
+		_id = other._id;
+		other._id = 0;
+	}
+
 	void Texture::SetParameteri(GLenum name, GLint value) const
 	{
 		Bind();

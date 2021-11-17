@@ -1,8 +1,5 @@
 #include "Engine/Shader/VertexBuffer.h"
 
-#include "glad/glad.h"
-#include <stdexcept>
-
 namespace Engine
 {
 

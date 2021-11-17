@@ -9,7 +9,7 @@ namespace Engine {
 		Texture(const std::string& texturePath);
 		~Texture();
 
-		Texture(Texture&&) = delete;
+		Texture(Texture&&) noexcept;
 		Texture(const Texture&) = delete;
 		Texture operator=(Texture&&) = delete;
 		Texture operator=(const Texture&) = delete;

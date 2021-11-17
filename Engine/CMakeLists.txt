@@ -16,6 +16,9 @@ set(INCLUDES
 		include/Engine/Shader/IndexBuffer.h
 		include/Engine/Shader/BufferUsage.h
 		include/Engine/Texture.h
+		include/Engine/Objects/Mesh.h
+		include/Engine/Objects/Scene.h
+		include/Engine/Objects/Transformable.h
         )
 
 set(SOURCES
@@ -28,6 +31,9 @@ set(SOURCES
 		src/Engine/Shader/IndexBuffer.cpp
 		src/Engine/Shader/BufferUsage.cpp	
 		src/Engine/Texture.cpp
+		src/Engine/Objects/Mesh.cpp
+		src/Engine/Objects/Scene.cpp
+		src/Engine/Objects/Transformable.cpp
 		)
 		
 		
@@ -48,11 +54,11 @@ add_subdirectory(../external/imgui ${CMAKE_CURRENT_BINARY_DIR}/imgui)
 add_subdirectory(../external/glm ${CMAKE_CURRENT_BINARY_DIR}/glm)
 add_subdirectory(../external/stb ${CMAKE_CURRENT_BINARY_DIR}/stb)
 
-target_link_libraries(${ENGINE_PROJECT_NAME} PRIVATE glfw)
+target_link_libraries(${ENGINE_PROJECT_NAME} PUBLIC glfw)
 target_link_libraries(${ENGINE_PROJECT_NAME} PUBLIC glad)
-target_link_libraries(${ENGINE_PROJECT_NAME} PRIVATE ImGui)
+target_link_libraries(${ENGINE_PROJECT_NAME} PUBLIC ImGui)
 target_link_libraries(${ENGINE_PROJECT_NAME} PUBLIC glm)
-target_link_libraries(${ENGINE_PROJECT_NAME} PRIVATE stb)
+target_link_libraries(${ENGINE_PROJECT_NAME} PUBLIC stb)
 
 target_include_directories(${ENGINE_PROJECT_NAME} PUBLIC include)
 target_compile_features(${ENGINE_PROJECT_NAME} PUBLIC cxx_std_17)   
