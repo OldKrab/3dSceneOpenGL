@@ -2,6 +2,8 @@
 #include <memory>
 #include <string>
 #include <Engine/Objects/Mesh.h>
+#include <Engine/Objects/Scene.h>
+#include <Engine/Objects/Model.h>
 
 #include "Texture.h"
 #include "Engine/Shader/VertexBuffer.h"
@@ -17,7 +19,7 @@ namespace Engine {
 		Window(int width, int height, const char* title);
 
 		int Start();
-
+        void SetScene(Scene&& scene);
 	private:
 		int Init();
 		int GlfwInit();
@@ -37,7 +39,7 @@ namespace Engine {
 		std::string  _title;
 		GLFWwindow* _window;
 		std::unique_ptr<ShaderProgram> _shaderProgram;
-		std::unique_ptr<Mesh> _cube;
+        Scene _scene;
 		std::unique_ptr<Camera> _camera;
 		bool _isCameraRotating = false;
 		float _backgroundColor[4];

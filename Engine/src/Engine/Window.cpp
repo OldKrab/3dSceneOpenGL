@@ -10,41 +10,6 @@
 
 namespace Engine {
 
-    std::unique_ptr<Mesh> CreateCube() {
-        std::vector<Vertex> vertexes
-                {
-                        {{-0.5f, -0.5f, -0.5f}, {0, 0, 0}, {0.25f, 0.5f}},
-                        {{-0.5f, 0.5f,  -0.5f}, {0, 0, 0}, {0.25f, 0.75f}},
-                        {{0.5f,  0.5f,  -0.5f}, {0, 0, 0}, {0.5f,  0.75f}},
-                        {{0.5f,  -0.5f, -0.5f}, {0, 0, 0}, {0.5f,  0.5f}},
-
-                        {{-0.5f, -0.5f, 0.5f},  {0, 0, 0}, {0,     0.5f}},
-                        {{-0.5f, -0.5f, 0.5f},  {0, 0, 0}, {0.25f, 0.25f}},
-                        {{-0.5f, -0.5f, 0.5f},  {0, 0, 0}, {1.f,   0.5f}},
-
-                        {{-0.5f, 0.5f,  0.5f},  {0, 0, 0}, {0,     0.75f}},
-                        {{-0.5f, 0.5f,  0.5f},  {0, 0, 0}, {0.25f, 1.f}},
-                        {{-0.5f, 0.5f,  0.5f},  {0, 0, 0}, {1.f,   0.75f}},
-
-                        {{0.5f,  0.5f,  0.5f},  {0, 0, 0}, {0.5f,  1.f}},
-                        {{0.5f,  0.5f,  0.5f},  {0, 0, 0}, {0.75f, 0.75f}},
-
-                        {{0.5f,  -0.5f, 0.5f},  {0, 0, 0}, {0.5f,  0.25f}},
-                        {{0.5f,  -0.5f, 0.5f},  {0, 0, 0}, {0.75f, 0.5f}}
-                };
-
-        std::vector<GLuint> indexes{
-                1, 3, 0, 1, 3, 2, 2, 13, 3, 2, 13, 11, 11, 6, 13, 11, 6, 9, 7, 0, 4, 7, 0, 1, 8, 2, 1, 8, 2, 10, 0, 12,
-                5, 0, 12, 3
-        };
-
-
-        auto texture = std::make_unique<Texture>("assets/tex2.jpg");
-        texture->SetParameteri(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        return std::make_unique<Mesh>("Some Head", vertexes, indexes, std::move(texture));
-    }
-
-
     Window::Window(int width, int height, const char *title)
             : _width(width), _height(height), _title(title), _window(nullptr), _backgroundColor{1, 0, 1, 1} {
         GlfwInit();
@@ -78,7 +43,7 @@ namespace Engine {
 
         _shaderProgram->SetUniformMatrix4fv("view", _camera->GetView());
         _shaderProgram->SetUniformMatrix4fv("projection", projection);
-        _cube->Draw(*_shaderProgram);
+        _scene.Draw(*_shaderProgram);
     }
 
     ///////////////////////////////////////////
@@ -111,7 +76,6 @@ namespace Engine {
     ///////////////////////////////////////////
     int Window::Init() {
         _shaderProgram = std::make_unique<ShaderProgram>(vertexShaderSource, fragmentShaderSource);
-        _cube = CreateCube();
         _camera = std::make_unique<Camera>();
         _camera->MovePosition({0, 0, -3});
         SetProjection(_width, _height);
@@ -138,7 +102,7 @@ namespace Engine {
                                        [](GLFWwindow *window, int width, int height) {
                                            auto pw = (Window *) glfwGetWindowUserPointer(window);
                                            if (height != 0)
-                                              pw->SetProjection(width,height);
+                                               pw->SetProjection(width, height);
                                            glViewport(0, 0, width, height);
                                        });
 
@@ -185,11 +149,11 @@ namespace Engine {
 
         ImGui::Begin("Debug");
         ImGui::ColorEdit4("Background Color", _backgroundColor);
-        if (ImGui::CollapsingHeader("Meshes")) {
-            ImGui::Indent();
-            _cube->ImGuiRender();
-            ImGui::Unindent();
-        }
+
+        ImGui::Indent();
+        _scene.ImGuiRender();
+        ImGui::Unindent();
+
 
         ImGui::End();
 
@@ -255,8 +219,13 @@ namespace Engine {
     ///////////////////////////////////////////
     void Window::SetProjection(int width, int height) {
         projection = glm::perspective(glm::radians(45.0f),
-                                          (float) width / (float) height, 0.01f,
-                                          100.0f);
+                                      (float) width / (float) height, 0.01f,
+                                      100.0f);
+    }
+
+    void Window::SetScene(Scene&& scene) {
+        _scene = std::move(scene);
+
     }
 
 

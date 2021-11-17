@@ -19,7 +19,9 @@ set(INCLUDES
 		include/Engine/Objects/Mesh.h
 		include/Engine/Objects/Scene.h
         include/Engine/Objects/Transform.h
-        include/Engine/Objects/Camera.h)
+        include/Engine/Objects/Camera.h
+		include/Engine/Objects/Model.h
+		)
 
 set(SOURCES
         src/Engine/Window.cpp
@@ -37,7 +39,7 @@ set(SOURCES
 		src/Engine/Objects/Camera.cpp)
 		
 		
-set(ALL_SOURCES ${INCLUDES} ${SOURCES})
+set(ALL_SOURCES ${INCLUDES} ${SOURCES} )
 
 add_library(${ENGINE_PROJECT_NAME} STATIC
     ${ALL_SOURCES}
