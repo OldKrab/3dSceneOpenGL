@@ -10,5 +10,5 @@ namespace Engine {
 	};
 
 	GLenum BufferUsageToGLenum(BufferUsage usage);
-};
+}
 

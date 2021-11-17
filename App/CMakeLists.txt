@@ -11,6 +11,6 @@ target_link_libraries(${ENGINE_PROJECT_NAME} Engine)
 
 set(COPIED "TRUE" CACHE BOOL "Resoure copied")
 if(${COPIED})
-    file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/App)
+    file(COPY assets DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 endif()
 set(COPIED "TRUE" CACHE BOOL "Resoure copied" FORCE)

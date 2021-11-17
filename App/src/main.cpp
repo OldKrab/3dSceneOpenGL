@@ -3,9 +3,9 @@
 #include <iostream>
 int main() {
 	try{
-	auto window = std::make_unique<Engine::Window>(1200, 800, "Test");
+	auto window = std::make_unique<Engine::Window>(1600, 900, "Test");
     window->Start();
-	}catch (std::exception e)
+	}catch (std::exception& e)
 	{
 		std::cout << e.what();
 	}

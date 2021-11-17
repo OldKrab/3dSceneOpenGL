@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.12)
 
 project(3dSceneOpenGL)
 
+
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 add_subdirectory(Engine)
 add_subdirectory(App)
 

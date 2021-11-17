@@ -8,6 +8,7 @@
 #include "Engine/Shader/ShaderProgram.h"
 #include "Engine/Shader/VertexArray.h"
 #include "Engine/Objects/Transform.h"
+#include "Engine/Objects/Camera.h"
 
 
 namespace Engine {

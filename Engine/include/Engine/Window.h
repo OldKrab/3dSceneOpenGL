@@ -28,12 +28,21 @@ namespace Engine {
 		void OnUpdate();
 		void ImGuiRender();
 
+		void UpdateCameraPos(float delta);
+		void SetProjection(int width, int height);
+        void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+        void MousePosCallback(GLFWwindow* window, double xpos, double ypos);
+		void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 		int _width, _height;
 		std::string  _title;
 		GLFWwindow* _window;
 		std::unique_ptr<ShaderProgram> _shaderProgram;
 		std::unique_ptr<Mesh> _cube;
+		std::unique_ptr<Camera> _camera;
+		bool _isCameraRotating = false;
 		float _backgroundColor[4];
+		glm::mat4 projection;
+
 
 	};
 

@@ -68,14 +68,6 @@ namespace Engine {
     }
 
 
-    glm::mat4 view = glm::mat4(1.0f);
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1200.0f / 800.0f, 1.0f, 100.0f);
-
-    static glm::vec3 _scale = glm::vec3(1.f, 1.f, 1.f);
-    static glm::vec3 _translation = glm::vec3(0.f, 0.f, 0.f);
-    static glm::vec3 _rotation = glm::vec3(0.f, 0.f, 0.f);
-    static bool _rotating = false;
-
     ///////////////////////////////////////////
     void Window::Render() {
         glClearColor(_backgroundColor[0], _backgroundColor[1], _backgroundColor[2], _backgroundColor[3]);
@@ -84,7 +76,7 @@ namespace Engine {
 
         _shaderProgram->Use();
 
-        _shaderProgram->SetUniformMatrix4fv("view", view);
+        _shaderProgram->SetUniformMatrix4fv("view", _camera->GetView());
         _shaderProgram->SetUniformMatrix4fv("projection", projection);
         _cube->Draw(*_shaderProgram);
     }
@@ -92,14 +84,16 @@ namespace Engine {
     ///////////////////////////////////////////
     void Window::OnUpdate() {
         glfwPollEvents();
-        static int fps = 0;
-        static double time = 0;
-        static double prevTime = 0;
 
-        double curTime = glfwGetTime();
-        double deltaTime = curTime - prevTime;
+        static float time = 0;
+        static float prevTime = 0;
+        float curTime = glfwGetTime();
+        float deltaTime = curTime - prevTime;
         prevTime = curTime;
 
+        UpdateCameraPos(deltaTime);
+
+        static int fps = 0;
         fps++;
         time += deltaTime;
         if (time > 1) {
@@ -107,9 +101,6 @@ namespace Engine {
             glfwSetWindowTitle(_window, (std::string("FPS:") + std::to_string(fps)).c_str());
             fps = 0;
         }
-
-        if (_rotating)
-            _rotation[1] += 1.f * (float) deltaTime;
 
         // _cube->SetRotation(_rotation);
         // _cube->SetTranslation(_translation);
@@ -121,7 +112,11 @@ namespace Engine {
     int Window::Init() {
         _shaderProgram = std::make_unique<ShaderProgram>(vertexShaderSource, fragmentShaderSource);
         _cube = CreateCube();
-        view = glm::translate(view, {0, 0, -3});
+        _camera = std::make_unique<Camera>();
+        _camera->MovePosition({0, 0, -3});
+        SetProjection(_width, _height);
+
+
         return 0;
     }
 
@@ -137,13 +132,28 @@ namespace Engine {
         }
 
         glfwMakeContextCurrent(_window);
+        glfwSetWindowUserPointer(_window, this);
 
         glfwSetFramebufferSizeCallback(_window,
                                        [](GLFWwindow *window, int width, int height) {
+                                           auto pw = (Window *) glfwGetWindowUserPointer(window);
+                                           if (height != 0)
+                                              pw->SetProjection(width,height);
                                            glViewport(0, 0, width, height);
                                        });
 
-
+        glfwSetKeyCallback(_window, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
+            auto pw = (Window *) glfwGetWindowUserPointer(window);
+            pw->KeyCallback(window, key, scancode, action, mods);
+        });
+        glfwSetMouseButtonCallback(_window, [](GLFWwindow *window, int button, int action, int mods) {
+            auto pw = (Window *) glfwGetWindowUserPointer(window);
+            pw->MouseButtonCallback(window, button, action, mods);
+        });
+        glfwSetCursorPosCallback(_window, [](GLFWwindow *window, double xpos, double ypos) {
+            auto pw = (Window *) glfwGetWindowUserPointer(window);
+            pw->MousePosCallback(window, xpos, ypos);
+        });
         return 0;
     }
 
@@ -171,7 +181,7 @@ namespace Engine {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-       // ImGui::ShowDemoWindow();
+        // ImGui::ShowDemoWindow();
 
         ImGui::Begin("Debug");
         ImGui::ColorEdit4("Background Color", _backgroundColor);
@@ -180,11 +190,74 @@ namespace Engine {
             _cube->ImGuiRender();
             ImGui::Unindent();
         }
-        ImGui::Checkbox("Rotating", &_rotating);
 
         ImGui::End();
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     }
+
+    ///////////////////////////////////////////
+    void Window::KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+        //nothing
+    }
+
+    void Window::MouseButtonCallback(GLFWwindow *window, int button, int action, int mods) {
+        if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
+            _isCameraRotating = true;
+        if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE)
+            _isCameraRotating = false;
+
+    }
+
+    ///////////////////////////////////////////
+    void Window::MousePosCallback(GLFWwindow *window, double xpos, double ypos) {
+        static bool firstMouse = true;
+        if (_isCameraRotating) {
+            static double lastX, lastY;
+            if (firstMouse) {
+                lastX = xpos;
+                lastY = ypos;
+                firstMouse = false;
+            }
+
+            auto xoffset = (float) (xpos - lastX);
+            auto yoffset = (float) (lastY - ypos);
+
+            lastX = xpos;
+            lastY = ypos;
+
+            _camera->MoveDirection(xoffset, yoffset);
+        } else
+            firstMouse = true;
+    }
+
+    ///////////////////////////////////////////
+    void Window::UpdateCameraPos(float delta) {
+        glm::vec3 position(0, 0, 0);
+        if (glfwGetKey(_window, GLFW_KEY_W) == GLFW_PRESS)
+            position.z += 1;
+        if (glfwGetKey(_window, GLFW_KEY_S) == GLFW_PRESS)
+            position.z -= 1;
+        if (glfwGetKey(_window, GLFW_KEY_A) == GLFW_PRESS)
+            position.x -= 1;
+        if (glfwGetKey(_window, GLFW_KEY_D) == GLFW_PRESS)
+            position.x += 1;
+        if (glfwGetKey(_window, GLFW_KEY_SPACE) == GLFW_PRESS)
+            position.y += 1;
+        if (glfwGetKey(_window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+            position.y -= 1;
+
+        if (glm::abs(glm::length(position)) > 1e-5)
+            _camera->MovePosition(glm::normalize(position) * delta);
+    }
+
+    ///////////////////////////////////////////
+    void Window::SetProjection(int width, int height) {
+        projection = glm::perspective(glm::radians(45.0f),
+                                          (float) width / (float) height, 0.01f,
+                                          100.0f);
+    }
+
+
 }

@@ -32,7 +32,7 @@ namespace Engine {
         _vao->Bind();
         _vbo = std::make_unique<VertexBuffer>(_vertices.data(), _vertices.size() * sizeof(Vertex), layout,
                                               BufferUsage::Static);
-        _ibo = std::make_unique<IndexBuffer>(_indexes.data(), _indexes.size() * sizeof(Vertex), _indexes.size(),
+        _ibo = std::make_unique<IndexBuffer>(_indexes.data(), _indexes.size() * sizeof(GLuint), _indexes.size(),
                                              BufferUsage::Static);
 
         _vao->AddVertexBuffer(*_vbo);
