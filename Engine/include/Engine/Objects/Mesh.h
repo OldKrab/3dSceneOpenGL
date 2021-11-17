@@ -7,7 +7,7 @@
 #include "glad/glad.h"
 #include "Engine/Shader/ShaderProgram.h"
 #include "Engine/Shader/VertexArray.h"
-#include "Engine/Objects/Transformable.h"
+#include "Engine/Objects/Transform.h"
 
 
 namespace Engine {
@@ -20,19 +20,23 @@ namespace Engine {
     };
 
 
-    class Mesh : public Transformable {
+    class Mesh  {
     public:
+        Mesh(std::string name, std::vector<Vertex> vertices, std::vector<GLuint> indexes, std::unique_ptr<Texture> texture);
         Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indexes, std::unique_ptr<Texture> texture);
 
         void Draw(ShaderProgram &shader);
+        void ImGuiRender();
 
-        std::vector<Vertex> vertices;
-        std::vector<GLuint> indexes;
-        std::unique_ptr<Texture> _texture;
-
+        const std::string& GetName() const {return _name;}
+        void SetName(const std::string& name)  { _name = name;}
     private:
         void SetupMesh();
-
+        Transform _transform;
+        std::string _name;
+        std::vector<Vertex> _vertices;
+        std::vector<GLuint> _indexes;
+        std::unique_ptr<Texture> _texture;
         std::unique_ptr<VertexArray> _vao;
         std::unique_ptr<VertexBuffer> _vbo;
         std::unique_ptr<IndexBuffer> _ibo;

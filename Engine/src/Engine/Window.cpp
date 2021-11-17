@@ -41,7 +41,7 @@ namespace Engine {
 
         auto texture = std::make_unique<Texture>("assets/tex2.jpg");
         texture->SetParameteri(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        return std::make_unique<Mesh>(vertexes, indexes, std::move(texture));
+        return std::make_unique<Mesh>("Some Head", vertexes, indexes, std::move(texture));
     }
 
 
@@ -69,7 +69,7 @@ namespace Engine {
 
 
     glm::mat4 view = glm::mat4(1.0f);
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 800.0f, 1.0f, 100.0f);
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1200.0f / 800.0f, 1.0f, 100.0f);
 
     static glm::vec3 _scale = glm::vec3(1.f, 1.f, 1.f);
     static glm::vec3 _translation = glm::vec3(0.f, 0.f, 0.f);
@@ -111,9 +111,9 @@ namespace Engine {
         if (_rotating)
             _rotation[1] += 1.f * (float) deltaTime;
 
-        _cube->SetRotation(_rotation);
-        _cube->SetTranslation(_translation);
-        _cube->SetScale(_scale);
+        // _cube->SetRotation(_rotation);
+        // _cube->SetTranslation(_translation);
+        // _cube->SetScale(_scale);
 
     }
 
@@ -171,13 +171,15 @@ namespace Engine {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        //ImGui::ShowDemoWindow();
+       // ImGui::ShowDemoWindow();
 
         ImGui::Begin("Debug");
         ImGui::ColorEdit4("Background Color", _backgroundColor);
-        ImGui::DragFloat3("Scale", &_scale[0], 0.01f);
-        ImGui::DragFloat3("Translation", &_translation[0], 0.01f);
-        ImGui::DragFloat3("Rotation", &_rotation[0], 0.01f);
+        if (ImGui::CollapsingHeader("Meshes")) {
+            ImGui::Indent();
+            _cube->ImGuiRender();
+            ImGui::Unindent();
+        }
         ImGui::Checkbox("Rotating", &_rotating);
 
         ImGui::End();

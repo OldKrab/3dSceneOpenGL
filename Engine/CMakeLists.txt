@@ -18,7 +18,7 @@ set(INCLUDES
 		include/Engine/Texture.h
 		include/Engine/Objects/Mesh.h
 		include/Engine/Objects/Scene.h
-		include/Engine/Objects/Transformable.h
+        include/Engine/Objects/Transform.h
         )
 
 set(SOURCES
@@ -33,7 +33,7 @@ set(SOURCES
 		src/Engine/Texture.cpp
 		src/Engine/Objects/Mesh.cpp
 		src/Engine/Objects/Scene.cpp
-		src/Engine/Objects/Transformable.cpp
+        src/Engine/Objects/Transform.cpp
 		)
 		
 		
