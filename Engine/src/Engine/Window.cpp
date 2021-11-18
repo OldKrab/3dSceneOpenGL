@@ -11,7 +11,7 @@
 namespace Engine {
 
     Window::Window(int width, int height, const char *title)
-            : _width(width), _height(height), _title(title), _window(nullptr), _backgroundColor{1, 0, 1, 1} {
+            : _width(width), _height(height), _title(title), _window(nullptr), _backgroundColor{0, 188.f/255.f, 1, 1} {
         GlfwInit();
         GladInit();
         Init();

@@ -32,9 +32,9 @@ namespace Engine {
         _isModified = false;
         auto t = glm::mat4(1);
         t = glm::translate(t, _translation);
+        t = glm::rotate(t, _rotation.y, {0, 1, 0});
         t = glm::rotate(t, _rotation.x, {1, 0, 0});
         t = glm::rotate(t, _rotation.z, {0, 0, 1});
-        t = glm::rotate(t, _rotation.y, {0, 1, 0});
 
         t = glm::scale(t, _scale);
         _cachedTrans = t;

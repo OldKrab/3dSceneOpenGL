@@ -28,6 +28,9 @@ namespace Engine {
 			out vec4 fragColor;
 
             void main() {
-               fragColor = texture(texture_diffuse1, texPoint);
+                vec4 texColor = texture(texture_diffuse1, texPoint);
+                if(texColor.a < 0.5)
+                    discard;
+                fragColor = texColor;
             })";
 }

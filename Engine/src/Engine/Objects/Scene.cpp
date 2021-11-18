@@ -49,6 +49,8 @@ namespace Engine {
 
     void Scene::LoadSave(std::string path) {
         std::ifstream fin(path);
+        if(!fin.is_open())
+            return;
         std::string name;
         fin >> name;
         while(!fin.eof()) {

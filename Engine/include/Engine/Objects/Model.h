@@ -12,6 +12,7 @@ namespace Engine {
             loadModel(path);
         }
 
+        Model(std::string name) :_name(name){}
         Model() = default;
 
         Model(const Model &) = delete;
