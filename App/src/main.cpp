@@ -40,14 +40,15 @@ Engine::Mesh CreateCube() {
 
 int main() {
     try {
-
+        std::string savePath = "assets/saves/save1";
         auto window = std::make_unique<Engine::Window>(1600, 900, "Test");
-        Engine::Scene scene;
-
-        scene.AddModel(Engine::Model("mister", "assets/hitler/hitler.obj"));
-        scene.AddModel(Engine::Model("grass", "assets/grass/10450_Rectangular_Grass_Patch_v1_iterations-2.obj"));
-        window->SetScene(std::move(scene));
+        auto scene = std::make_shared<Engine::Scene>();
+        scene->AddModel(Engine::Model("mister", "assets/hitler/hitler.obj"));
+        scene->AddModel(Engine::Model("grass", "assets/grass/10450_Rectangular_Grass_Patch_v1_iterations-2.obj"));
+        scene->LoadSave(savePath);
+        window->SetScene(scene);
         window->Start();
+        scene->Save(savePath);
     } catch (std::exception &e) {
         std::cout << e.what();
     }

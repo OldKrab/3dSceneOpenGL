@@ -19,7 +19,7 @@ namespace Engine {
 		Window(int width, int height, const char* title);
 
 		int Start();
-        void SetScene(Scene&& scene);
+        void SetScene(std::shared_ptr<Scene> scene);
 	private:
 		int Init();
 		int GlfwInit();
@@ -39,7 +39,7 @@ namespace Engine {
 		std::string  _title;
 		GLFWwindow* _window;
 		std::unique_ptr<ShaderProgram> _shaderProgram;
-        Scene _scene;
+        std::shared_ptr<Scene> _scene;
 		Camera _camera;
 		bool _isCameraRotating = false;
 		float _backgroundColor[4];

@@ -32,6 +32,14 @@ namespace Engine {
 
         void SetName(const std::string &name) { _name = name; }
 
+        const Transform& GetTransform() const {return _transform;}
+
+        void SetScale(const glm::vec3 &scale){_transform.SetScale(scale);}
+
+        void SetRotation(const glm::vec3 &rotation){_transform.SetRotation(rotation);}
+
+        void SetTranslation(const glm::vec3 &translation){_transform.SetTranslation(translation);}
+
     private:
         void loadModel(std::string path);
 

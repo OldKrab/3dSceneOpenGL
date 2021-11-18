@@ -1,9 +1,9 @@
 #pragma once
 
-
 #include <Engine/Shader/ShaderProgram.h>
 #include <memory>
 #include <vector>
+#include <unordered_map>
 #include "Mesh.h"
 #include "Model.h"
 
@@ -19,8 +19,13 @@ namespace Engine {
 		void Draw(ShaderProgram &shader);
 		void ImGuiRender();
 		void AddModel(Model&& model);
+
+		void Save(std::string path);
+		void LoadSave(std::string path);
+
 	private:
 		std::vector<Model> _models;
+		std::unordered_map<std::string, int> _nameToModelMap;
 	};
 
 }

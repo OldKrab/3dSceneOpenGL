@@ -43,7 +43,7 @@ namespace Engine {
 
         _shaderProgram->SetUniformMatrix4fv("view", _camera.GetView());
         _shaderProgram->SetUniformMatrix4fv("projection", projection);
-        _scene.Draw(*_shaderProgram);
+        _scene->Draw(*_shaderProgram);
     }
 
     ///////////////////////////////////////////
@@ -149,7 +149,7 @@ namespace Engine {
         ImGui::Begin("Debug");
         ImGui::ColorEdit4("Background Color", _backgroundColor);
 
-        _scene.ImGuiRender();
+        _scene->ImGuiRender();
         _camera.ImGuiRender();
 
         ImGui::End();
@@ -220,7 +220,7 @@ namespace Engine {
                                       1000.0f);
     }
 
-    void Window::SetScene(Scene&& scene) {
+    void Window::SetScene(std::shared_ptr<Scene> scene) {
         _scene = std::move(scene);
 
     }
