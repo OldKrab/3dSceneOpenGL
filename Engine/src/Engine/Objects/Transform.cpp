@@ -33,8 +33,9 @@ namespace Engine {
         auto t = glm::mat4(1);
         t = glm::translate(t, _translation);
         t = glm::rotate(t, _rotation.x, {1, 0, 0});
-        t = glm::rotate(t, _rotation.y, {0, 1, 0});
         t = glm::rotate(t, _rotation.z, {0, 0, 1});
+        t = glm::rotate(t, _rotation.y, {0, 1, 0});
+
         t = glm::scale(t, _scale);
         _cachedTrans = t;
         return t;
@@ -43,7 +44,7 @@ namespace Engine {
     void Transform::ImGuiRender() {
         _isModified = true;
         ImGui::DragFloat3("Scale", &_scale[0], 0.01f);
-        ImGui::DragFloat3("Translation", &_translation[0], 0.01f);
-        ImGui::DragFloat3("Rotation", &_rotation[0], 0.01f);
+        ImGui::DragFloat3("Translation", &_translation[0], 0.3f);
+        ImGui::DragFloat3("Rotation", &_rotation[0], 0.003f);
     }
 }
