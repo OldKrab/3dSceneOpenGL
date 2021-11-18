@@ -32,7 +32,7 @@ int main() {
         Engine::Model forestBack("forestBack");
         forestBack.AddMesh(CreateCube());
         scene->AddModel(std::move(forestBack));
-        scene->AddModel(Engine::Model("mister", "assets/hitler/hitler.obj"));
+        scene->AddModel(Engine::Model("mister", "assets/mister/mister.obj"));
         scene->AddModel(Engine::Model("grass", "assets/grass/10450_Rectangular_Grass_Patch_v1_iterations-2.obj"));
         scene->AddModel(Engine::Model("grass2", "assets/grass/10450_Rectangular_Grass_Patch_v1_iterations-2.obj"));
         scene->AddModel(Engine::Model("forest", "assets/forest/Bush 6.obj"));

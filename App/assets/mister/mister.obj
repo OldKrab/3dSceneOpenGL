@@ -1,4 +1,4 @@
-# OBJ written from /Users/man/Downloads/hitler/hitler/hitler.obj
+
 
 o Mesh
 v 1.3122 69.3358 2.2839
@@ -14177,7 +14177,7 @@ vt 0.9419 -0.8701
 vt 0.9482 -0.8486
 vt 0.9453 -0.8877
 vt 0.9482 -0.8677
-mtllib hitler.mtl
+mtllib mister.mtl
 usemtl material_0
 g Default
 f 1/1/1 2/2/2 3/3/3
