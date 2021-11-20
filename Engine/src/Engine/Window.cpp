@@ -38,12 +38,15 @@ namespace Engine {
         glClearColor(_backgroundColor[0], _backgroundColor[1], _backgroundColor[2], _backgroundColor[3]);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+        _shaderProgramLight->Use();
+        _shaderProgramLight->SetUniformMat4("view", _camera.GetView());
+        _shaderProgramLight->SetUniformMat4("projection", projection);
         _shaderProgram->Use();
+        _shaderProgram->SetUniformMat4("view", _camera.GetView());
+        _shaderProgram->SetUniformMat4("projection", projection);
+        _shaderProgram->SetUniformVec3("viewPos", _camera.GetPosition());
 
-        _shaderProgram->SetUniformMatrix4fv("view", _camera.GetView());
-        _shaderProgram->SetUniformMatrix4fv("projection", projection);
-        _scene->Draw(*_shaderProgram);
+        _scene->Draw(*_shaderProgram, *_shaderProgramLight);
     }
 
     ///////////////////////////////////////////
@@ -76,9 +79,9 @@ namespace Engine {
     ///////////////////////////////////////////
     int Window::Init() {
         _shaderProgram = std::make_unique<ShaderProgram>(vertexShaderSource, fragmentShaderSource);
+        _shaderProgramLight = std::make_unique<ShaderProgram>(vertexShaderSource, fragmentShaderLightSource);
         _camera.MovePosition({0, 0, -3});
         SetProjection(_width, _height);
-
 
         return 0;
     }
@@ -218,6 +221,7 @@ namespace Engine {
         projection = glm::perspective(glm::radians(45.0f),
                                       (float) width / (float) height, 0.01f,
                                       1000.0f);
+        glm::
     }
 
     void Window::SetScene(std::shared_ptr<Scene> scene) {

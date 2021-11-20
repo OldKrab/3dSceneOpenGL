@@ -1,39 +1,30 @@
 #include <utility>
 #include <iostream>
-#include <imgui.h>
 
 #include "Engine/Objects/Mesh.h"
 
 namespace Engine {
-    Mesh::Mesh(std::string name, std::vector<Vertex> vertices, std::vector<GLuint> indexes,
-               std::vector<Texture> texture)
-            : _vertices(std::move(vertices)), _indexes(std::move(indexes)),
-              _textures(std::move(texture)) {
+    Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indexes,
+               std::shared_ptr<Material> material)
+            : _vertices(std::move(vertices)), _indexes(std::move(indexes)), _material(material) {
         SetupMesh();
     }
 
-    Mesh::Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indexes, std::vector<Texture> texture)
-            : Mesh("NoName", std::move(vertices), std::move(indexes), std::move(texture)) {}
-
     void Mesh::Draw(ShaderProgram &shader) {
-        unsigned int diffuseNr = 1;
-        unsigned int specularNr = 1;
-        for (unsigned int i = 0; i < _textures.size(); i++) {
-            glActiveTexture(GL_TEXTURE0 + i); // активируем соответствующий текстурный юнит перед привязкой
-            // Получаем номер текстуры (значение N в diffuse_textureN)
-            std::string number;
-            std::string name = _textures[i].type;
-            if (name == "texture_diffuse")
-                number = std::to_string(diffuseNr++);
-            else if (name == "texture_specular")
-                number = std::to_string(specularNr++);
-
-            shader.SetFloat(("material." + name + number).c_str(), i);
-            _textures[i].Bind();
+        shader.SetUniformFloat("material.diffuse", 0);
+        shader.SetUniformFloat("material.specular", 1);
+        if(_material->diffuseTex != nullptr) {
+            glActiveTexture(GL_TEXTURE0);
+            _material->diffuseTex->Bind();
         }
-        glActiveTexture(GL_TEXTURE0);
-        _vao->Bind();
+        if(_material->specularTex != nullptr) {
+            glActiveTexture(GL_TEXTURE1);
+            _material->specularTex->Bind();
+        }
+        //glBindTexture(GL_TEXTURE_2D, 0);
+        shader.SetUniformFloat("material.shininess", _material->shininess);
 
+        _vao->Bind();
 
         glDrawElements(GL_TRIANGLES, (GLsizei) _indexes.size(), GL_UNSIGNED_INT, 0);
     }
@@ -53,7 +44,6 @@ namespace Engine {
         _vao->SetIndexBuffer(*_ibo);
     }
 
-
     Mesh::Mesh(Mesh &&other) noexcept {
         Swap(other);
     }
@@ -67,7 +57,7 @@ namespace Engine {
     void Mesh::Swap(Mesh &other) {
         std::swap(_vertices, other._vertices);
         std::swap(_indexes, other._indexes);
-        std::swap(_textures, other._textures);
+        std::swap(_material, other._material);
         std::swap(_vao, other._vao);
         std::swap(_vbo, other._vbo);
         std::swap(_ibo, other._ibo);

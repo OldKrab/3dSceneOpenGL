@@ -4,6 +4,7 @@
 #include <Engine/Objects/Mesh.h>
 #include <Engine/Objects/Scene.h>
 #include <Engine/Objects/Model.h>
+#include <Engine/Objects/Light.h>
 
 #include "Texture.h"
 #include "Engine/Shader/VertexBuffer.h"
@@ -39,6 +40,7 @@ namespace Engine {
 		std::string  _title;
 		GLFWwindow* _window;
 		std::unique_ptr<ShaderProgram> _shaderProgram;
+		std::unique_ptr<ShaderProgram> _shaderProgramLight;
         std::shared_ptr<Scene> _scene;
 		Camera _camera;
 		bool _isCameraRotating = false;

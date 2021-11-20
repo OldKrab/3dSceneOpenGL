@@ -17,7 +17,6 @@ namespace Engine {
 		void SetParameteri(GLenum name, GLint value) const;
 		void Bind() const;
 		static void UnBind();
-		std::string type;
         std::string path;
 	private:
 

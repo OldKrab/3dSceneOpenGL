@@ -7,6 +7,7 @@ illum 2
 Ka 0 0 0
 Ks 0.2 0.2 0.2
 map_Kd misterbody_colspec2.png
+map_Ks misterbody_spec.tga
 newmtl Head
 Kd 0.8 0.8 0.8
 Ns 256
@@ -15,4 +16,5 @@ illum 2
 Ka 0 0 0
 Ks 0.2 0.2 0.2
 map_Kd misterhead_colspec.tga
+map_Ks misterhead_spec.tga
 newmtl material_0

@@ -21,7 +21,7 @@ set(INCLUDES
         include/Engine/Objects/Transform.h
         include/Engine/Objects/Camera.h
 		include/Engine/Objects/Model.h
-		)
+        include/Engine/Objects/Light.h)
 
 set(SOURCES
         src/Engine/Window.cpp
@@ -38,7 +38,7 @@ set(SOURCES
         src/Engine/Objects/Transform.cpp
 		src/Engine/Objects/Camera.cpp
 		src/Engine/Objects/Model.cpp
-		)
+		src/Engine/Objects/Light.cpp)
 		
 		
 set(ALL_SOURCES ${INCLUDES} ${SOURCES})

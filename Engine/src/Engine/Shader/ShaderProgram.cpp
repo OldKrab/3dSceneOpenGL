@@ -30,15 +30,20 @@ namespace Engine
 		glUseProgram(_id);
 	}
 
-	void ShaderProgram::SetUniformMatrix4fv(const std::string property, const glm::mat4& data)
+	void ShaderProgram::SetUniformMat4(const std::string property, const glm::mat4& data)
 	{
 		const GLint transformLoc = glGetUniformLocation(_id, property.c_str());
 		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(data));
 	}
 
-	void ShaderProgram::SetFloat(const std::string property, float value) {
+	void ShaderProgram::SetUniformFloat(const std::string property, float value) {
 		const GLint loc = glGetUniformLocation(_id, property.c_str());
 		glUniform1f(loc, value);
+	}
+
+	void ShaderProgram::SetUniformVec3(const std::string property, const glm::vec3 &v) {
+		const GLint loc = glGetUniformLocation(_id, property.c_str());
+		glUniform3fv(loc, 1, glm::value_ptr(v));
 	}
 
 	GLuint ShaderProgram::CreateShader(const char* shaderSource, GLenum shaderType)
@@ -69,6 +74,8 @@ namespace Engine
 		glAttachShader(_id, fragShaderId);
 		glLinkProgram(_id);
 	}
+
+
 
 
 }

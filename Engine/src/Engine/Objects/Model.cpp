@@ -4,8 +4,7 @@
 namespace Engine {
 
     void Model::Draw(ShaderProgram &shader) {
-        auto debug = _transform.GetMatrix();
-        shader.SetUniformMatrix4fv("model", debug);
+        shader.SetUniformMat4("model", _transform.GetMatrix());
         for (auto &&mesh: _meshes) {
             mesh.Draw(shader);
         }
@@ -30,8 +29,7 @@ namespace Engine {
     Mesh Model::processMesh(const objl::Mesh &mesh, const objl::Loader &loader) {
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indices;
-        std::vector<Texture> textures;
-
+        auto material = std::make_shared<Material>();
         for (auto &&objVertex: mesh.Vertices) {
             Vertex vertex;
             // Обрабатываем координаты вершин, нормали и текстурные координаты
@@ -54,9 +52,11 @@ namespace Engine {
         indices = mesh.Indices;
         // Обрабатываем материал
         if (mesh.MeshMaterial.map_Kd != "")
-            textures.emplace_back(_directory + mesh.MeshMaterial.map_Kd);
-
-        return Mesh(vertices, indices, std::move(textures));
+            material->diffuseTex = std::make_shared<Texture>(_directory + mesh.MeshMaterial.map_Kd);
+        if (mesh.MeshMaterial.map_Ks != "")
+            material->specularTex = std::make_shared<Texture>(_directory + mesh.MeshMaterial.map_Ks);
+        material->shininess = mesh.MeshMaterial.Ns;
+        return Mesh(vertices, indices, material);
     }
 
 

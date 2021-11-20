@@ -20,12 +20,17 @@ namespace Engine {
         glm::vec2 TexCoords;
     };
 
+    struct Material {
+        std::shared_ptr<Texture> diffuseTex;
+        std::shared_ptr<Texture> specularTex;
+        float shininess;
+    };
+
 
     class Mesh {
     public:
-        Mesh(std::string name, std::vector<Vertex> vertices, std::vector<GLuint> indexes, std::vector<Texture> texture);
-
-        Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indexes, std::vector<Texture> texture);
+        Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indexes,
+             std::shared_ptr<Material> material);
 
         Mesh(const Mesh &) = delete;
 
@@ -33,20 +38,21 @@ namespace Engine {
 
         Mesh operator=(const Mesh &) = delete;
 
-        Mesh& operator=(Mesh &&other) noexcept;
+        Mesh &operator=(Mesh &&other) noexcept;
 
         void Draw(ShaderProgram &shader);
 
 
     private:
-        void Swap(Mesh& other);
+        void Swap(Mesh &other);
 
         void SetupMesh();
 
 
         std::vector<Vertex> _vertices;
         std::vector<GLuint> _indexes;
-        std::vector<Texture> _textures;
+
+        std::shared_ptr<Material> _material;
         std::unique_ptr<VertexArray> _vao;
         std::unique_ptr<VertexBuffer> _vbo;
         std::unique_ptr<IndexBuffer> _ibo;

@@ -10,6 +10,7 @@ namespace Engine {
         float RotatingSpeed = 0.07;
         float MovementSpeed = 20;
         void ImGuiRender();
+        const glm::vec3& GetPosition() const {return _position;}
     private:
         glm::vec3 GetDirection() const;
         glm::vec3 _position;
