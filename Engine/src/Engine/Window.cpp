@@ -221,7 +221,7 @@ namespace Engine {
         projection = glm::perspective(glm::radians(45.0f),
                                       (float) width / (float) height, 0.01f,
                                       1000.0f);
-        glm::
+
     }
 
     void Window::SetScene(std::shared_ptr<Scene> scene) {

@@ -9,9 +9,10 @@ set(OBJ_INCLUDES
 
 
 add_library(OBJLoader STATIC
-	${OBJ_INCLUDES}
+Source/OBJ_Loader.h
+Source/OBJ_Loader.cpp
         )
 
 target_include_directories(OBJLoader PUBLIC Source)
-set_target_properties(OBJLoader PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(OBJLoader PROPERTIES LINKER_LANGUAGE C)
 
